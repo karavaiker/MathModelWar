@@ -1,0 +1,428 @@
+﻿<Window
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="d" x:Class="MathModelApp.MainWindow"
+        xmlns:col="clr-namespace:System.Collections;assembly=mscorlib"
+        xmlns:sys="clr-namespace:System;assembly=mscorlib"
+    
+        Title="Анализ раешений" Name="MainWindowApp" Height="610" Width="1201" Background="#FF616161" KeyDown="MainWindowApp_KeyDown" MinHeight="702" MinWidth="800">
+    <Window.Resources>
+        <Storyboard x:Key="OnLoaded1"/>
+        <Storyboard x:Key="OnMouseEnter1">
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[2].(RotateTransform.Angle)" Storyboard.TargetName="ellipse">
+                <EasingDoubleKeyFrame KeyTime="0" Value="0"/>
+                <EasingDoubleKeyFrame KeyTime="0:0:0.2" Value="180"/>
+            </DoubleAnimationUsingKeyFrames>
+        </Storyboard>
+        <Storyboard x:Key="OnMouseLeave1">
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[2].(RotateTransform.Angle)" Storyboard.TargetName="ellipse">
+                <EasingDoubleKeyFrame KeyTime="0" Value="180"/>
+                <EasingDoubleKeyFrame KeyTime="0:0:0.3" Value="0"/>
+            </DoubleAnimationUsingKeyFrames>
+        </Storyboard>
+        <Storyboard x:Key="OnMouseLeftButtonDown1">
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[2].(RotateTransform.Angle)" Storyboard.TargetName="ellipse">
+                <EasingDoubleKeyFrame KeyTime="0" Value="0"/>
+                <EasingDoubleKeyFrame KeyTime="0:0:0.1" Value="-180"/>
+                <EasingDoubleKeyFrame KeyTime="0:0:0.9" Value="-1620"/>
+            </DoubleAnimationUsingKeyFrames>
+        </Storyboard>
+
+
+
+    </Window.Resources>
+    <Window.Triggers>
+        <EventTrigger RoutedEvent="FrameworkElement.Loaded">
+            <BeginStoryboard x:Name="OnLoaded1_BeginStoryboard" Storyboard="{StaticResource OnLoaded1}"/>
+        </EventTrigger>
+        <EventTrigger RoutedEvent="Mouse.MouseEnter" SourceName="ellipse">
+            <BeginStoryboard x:Name="OnMouseEnter1_BeginStoryboard" Storyboard="{StaticResource OnMouseEnter1}"/>
+        </EventTrigger>
+        <EventTrigger RoutedEvent="Mouse.MouseLeave" SourceName="ellipse">
+            <BeginStoryboard x:Name="OnMouseLeave1_BeginStoryboard" Storyboard="{StaticResource OnMouseLeave1}"/>
+        </EventTrigger>
+        <EventTrigger RoutedEvent="UIElement.MouseLeftButtonDown" SourceName="ellipse">
+            <BeginStoryboard x:Name="OnMouseLeftButtonDown1_BeginStoryboard" Storyboard="{StaticResource OnMouseLeftButtonDown1}"/>
+        </EventTrigger>
+    </Window.Triggers>
+
+    <Grid Name="MainGrid" Margin="0,0,0,0">
+        <!--Основная сетка-->
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="75"/>
+            <ColumnDefinition Width="801*"/>
+        </Grid.ColumnDefinitions>
+
+
+        <Grid x:Name="MainAreaInWindow" Background="#FFF1F2F7" Grid.Column="1">
+            <Grid>
+
+
+
+                <Grid x:Name="WelcomeSlide" Height="615" VerticalAlignment="Center" HorizontalAlignment="Center" Width="847" Background="White" Visibility="Visible" d:IsHidden="True">
+                    <TextBlock HorizontalAlignment="Center" TextWrapping="Wrap" VerticalAlignment="Top" TextAlignment="Center" Margin="51.5,157.55,52.5,0" Width="743"><Run FontSize="18.667" Language="ru-ru" Text="Программа предназначена для процесса обоснования решения при планировании и проведении мероприятий боевой подготовки оперативно-тактических формирований СВ РФ"/><LineBreak/><Run Language="ru-ru" Text=""/></TextBlock>
+                    <TextBlock HorizontalAlignment="Left" Height="110" Margin="51.5,358,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="743"><Run Language="ru-ru" Text="Разаработано"/></TextBlock>
+
+                </Grid>
+
+
+
+                <Grid x:Name="EditForcesSlide" Visibility="Visible" d:IsHidden="True">
+                    <Image Margin="0" Source="Images/map.jpg" Stretch="Fill" Width="1127" Height="639"/>
+                    <Grid x:Name="HeaderTextForces" Background="#CFFFFFFF" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,35,0,0">
+                        <Label Content="Данные о составе группировок сторон, укомплектованности ОТФ" HorizontalAlignment="Center" VerticalAlignment="Center" Height="35" Width="602.5" FontSize="18.667" FontWeight="SemiBold" HorizontalContentAlignment="Center" Margin="0,0,0,45.5"/>
+                        <TextBlock HorizontalAlignment="Center" Height="35" TextWrapping="Wrap" Text="При формировании составов групировок ОТФ сторон, необходимо указать укомплектвоанность каждой ОТФ" VerticalAlignment="Center" Width="549" TextAlignment="Center" Background="{x:Null}" Margin="26.75,45.5,26.75,0"/>
+                    </Grid>
+
+                    <Grid x:Name="infoAboutAttack" Grid.Column="1" HorizontalAlignment="Right" VerticalAlignment="Center" Width="250" Height="308" Margin="0,0,10,0" Background="#9BFF1700">
+                        <Button x:Name="PlusOTFButton" Content="+ Добавить ОТФ Наступающих  " HorizontalAlignment="Center" VerticalAlignment="Bottom" Width="230" Height="19" Foreground="White" BorderBrush="{x:Null}" Background="#66FF7400" Click="PlusOTFButton_Click" Margin="0,0,0,5"/>
+                        <Label Content="Наступающие" HorizontalAlignment="Center" VerticalAlignment="Top" FontSize="16" Height="23" Width="112" Foreground="White" Background="{x:Null}" Padding="0" HorizontalContentAlignment="Center" Margin="0,1,0,0"/>
+                        <DataGrid x:Name="AboutOTFAttack" HorizontalAlignment="Center" VerticalAlignment="Center" Height="250" Width="250" Background="#FFFDFDFD" Foreground="#FF4D4D4D" BorderBrush="{x:Null}" FontSize="21.333" FrozenColumnCount="2" MinColumnWidth="69" AlternatingRowBackground="#FFEEEEEE" FontWeight="Light" HorizontalGridLinesBrush="#FFC7C7C7" VerticalGridLinesBrush="#FFCBCBCB">
+                            <DataGrid.Columns>
+                                <DataGridComboBoxColumn Header="Тип ОТФ" Width="140"/>
+                                <DataGridTextColumn Header="Укомплект."/>
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </Grid>
+                    <Grid x:Name="InfoAboutDefender" HorizontalAlignment="Left" VerticalAlignment="Center" Height="309" Grid.Column="1" Width="250" Margin="10,0,0,0" Background="#9B869AFF">
+                        <DataGrid x:Name="AboutOTFDeffender" Height="250" Width="250" VerticalAlignment="Center" HorizontalAlignment="Center" Background="#FFFDFDFD" Foreground="#FF4D4D4D" BorderBrush="{x:Null}" FontSize="21.333" FrozenColumnCount="2" MinColumnWidth="69" AlternatingRowBackground="#FFEEEEEE" FontWeight="Light" HorizontalGridLinesBrush="#FFC7C7C7" VerticalGridLinesBrush="#FFCBCBCB" Grid.ColumnSpan="2">
+
+                            <!--<DataGrid.Columns>
+                                <DataGridComboBoxColumn Header="Тип ОТФ" Width="140" SelectedItemBinding="{Binding Path=CategoryName}">
+                                    <DataGridComboBoxColumn.ItemsSource >
+                                        <col:ArrayList>
+                                            <sys:String>General</sys:String>
+                                            <sys:String>Communications</sys:String>
+                                            <sys:String>Deception</sys:String>
+                                            <sys:String>Munitions</sys:String>
+                                            <sys:String>Protection</sys:String>
+                                            <sys:String>Tools</sys:String>
+                                            <sys:String>Travel</sys:String>
+                                        </col:ArrayList>
+                                    </DataGridComboBoxColumn.ItemsSource>
+                                </DataGridComboBoxColumn>
+
+                                <DataGridTextColumn Header="Укомплект."/>
+                            </DataGrid.Columns>-->
+                        </DataGrid>
+                        <Button Content="+ Добавить ОТФ Обороняющихся" HorizontalAlignment="Center" VerticalAlignment="Bottom" Width="230" Height="20" Background="#66005DFF" BorderBrush="{x:Null}" Foreground="White" Grid.ColumnSpan="2" Margin="30.5,0,30.5,5"/>
+                        <Label Content="Обороняющиеся" HorizontalAlignment="Center" VerticalAlignment="Top" FontSize="16" Height="31.28" Width="136.056" Grid.ColumnSpan="2" Foreground="White" Background="{x:Null}"/>
+                    </Grid>
+                </Grid>
+                <Grid x:Name="EditorOTF" HorizontalAlignment="Center" VerticalAlignment="Center" d:IsHidden="True" Visibility="Hidden">
+                    <Grid x:Name="EditAttackSlide" Background="White" VerticalAlignment="Center" HorizontalAlignment="Center">
+                        <Grid.Effect>
+                            <DropShadowEffect ShadowDepth="0" BlurRadius="100" Opacity="0.355"/>
+                        </Grid.Effect>
+                        <GroupBox Header="Наступающие" HorizontalAlignment="Center" VerticalAlignment="Center" Height="525" Width="470" Margin="10">
+                            <Grid>
+                                <GroupBox Header="Редактор" HorizontalAlignment="Center" Height="160" Margin="0,0,0,10" VerticalAlignment="Bottom" Width="422.77">
+                                    <Grid>
+                                        <ComboBox HorizontalAlignment="Left" VerticalAlignment="Top" Width="92.5" Height="25" RenderTransformOrigin="0.78,6.01" Margin="107.736,49,0,0" SelectedIndex="0">
+                                            <ComboBoxItem Content="мсвбтр" HorizontalAlignment="Left" Width="92"/>
+                                            <ComboBoxItem Content="мсрбтр" HorizontalAlignment="Left" Width="92"/>
+                                            <ComboBoxItem Content="мсббтр" HorizontalAlignment="Left" Width="92"/>
+                                            <ComboBoxItem Content="мсв" HorizontalAlignment="Left" Width="92"/>
+                                            <ComboBoxItem Content="мср" HorizontalAlignment="Left" Width="92"/>
+                                            <ComboBoxItem Content="мср" Width="92"/>
+                                            <ComboBoxItem Content="мсб" Width="92"/>
+                                            <ComboBoxItem Content="тв" Width="92"/>
+                                            <ComboBoxItem Content="тр" Width="92"/>
+                                            <ComboBoxItem Content="тб" Width="92"/>
+                                            <ComboBoxItem Content="пдв" Width="92"/>
+                                            <ComboBoxItem Content="пдр" Width="92"/>
+                                            <ComboBoxItem Content="пдб" Width="92"/>
+                                            <ComboBoxItem Content="пдп" Width="92"/>
+                                            <ComboBoxItem Content="вдд" Width="92"/>
+                                            <ComboBoxItem Content="мсбрЛ" Width="92"/>
+                                            <ComboBoxItem Content="мсбрлС" Width="92"/>
+                                            <ComboBoxItem Content="мсбрТ" Width="92"/>
+                                            <ComboBoxItem Content="тбр" Width="92"/>
+                                            <ComboBoxItem Content="омсб" Width="92"/>
+                                            <ComboBoxItem Content="сб" Width="92"/>
+                                            <ComboBoxItem Content="отб" Width="92"/>
+                                            <ComboBoxItem Content="отпадн" Width="92"/>
+                                            <ComboBoxItem Content="эскБВ" Width="92"/>
+                                        </ComboBox>
+                                        <TextBox HorizontalAlignment="Left" Height="25" Margin="325.77,49,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="75"/>
+                                        <Button Content="Удалить" HorizontalAlignment="Left" Height="25" VerticalAlignment="Bottom" Width="125" Margin="145.77,0,0,0" BorderThickness="0" Background="{x:Null}"/>
+                                        <Button Content="Добавить" HorizontalAlignment="Left" Height="25" VerticalAlignment="Bottom" Width="125" Margin="275.77,0,0,0" Background="#FF1CA46C" BorderThickness="0"/>
+                                        <TextBlock HorizontalAlignment="Left" Margin="10,10,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="390.77" Height="34"><Run Language="ru-ru" Text="Выберете из списка тип ОТФ, а так же в поле для ввода указать укомплектованность (от 0 до 1)"/></TextBlock>
+                                        <TextBlock HorizontalAlignment="Left" Margin="243.54,55.01,0,0" TextWrapping="Wrap" VerticalAlignment="Top"><Run Language="ru-ru" Text="Укомплектов.:"/></TextBlock>
+                                        <TextBlock HorizontalAlignment="Left" Margin="52.609,55.01,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="15.96"><Run Language="ru-ru" Text="Тип ОТФ"/><Run Text=":"/></TextBlock>
+                                    </Grid>
+                                </GroupBox>
+                                <DataGrid x:Name="EditAttackOTF" AutoGenerateColumns="False" ItemsSource="{Binding Elements[CompositionOfGroupsOTF]}" HorizontalAlignment="Center" Height="270" Margin="0,35.04,0,0" VerticalAlignment="Top" Width="260.885" BorderBrush="#FF6E9CC9" Foreground="#FF3C3C3C" HorizontalGridLinesBrush="#FFD8D8D8" VerticalGridLinesBrush="#FFE0E0E0" AlternatingRowBackground="#FFF0F0F0" FontSize="16">
+                                    <DataGrid.Columns>
+                                        <DataGridTextColumn Header="Тип ОТФ" Width="140" Binding="{Binding Element[NameOTF].Value}" />
+                                        <DataGridTextColumn Header="Укомплект." Width="110" Binding="{Binding Element[Staffing].Value}" />
+                                    </DataGrid.Columns>
+                                </DataGrid>
+                            </Grid>
+                        </GroupBox>
+                        <Button x:Name="CloseWindowEdit" Content="X" HorizontalAlignment="Right" VerticalAlignment="Top" Width="27" BorderThickness="0" Background="#FFE62C2C" Click="CloseWindowEdit_Click" Foreground="White" Height="18" Margin="0,-9,0,0"/>
+                    </Grid>
+
+
+
+                </Grid>
+
+
+                <!--Ввод условно-переменной информации-->
+                <Grid x:Name="EditValueSlide" Margin="0,-27,0,0" Height="647" VerticalAlignment="Center" HorizontalAlignment="Center" Width="887" Background="White">
+                    <Grid.Effect>
+                        <DropShadowEffect Opacity="0.38" BlurRadius="15"/>
+                    </Grid.Effect>
+                    <Grid x:Name="DataAboutAttack" Margin="0,0,-0.998,335" HorizontalAlignment="Center" VerticalAlignment="Center">
+                        <Image Source="Images/FM8_1.png" Stretch="Fill" Height="280" VerticalAlignment="Top" HorizontalAlignment="Left" Width="847.998"/>
+                        <TextBox x:Name="SizeAreaDefenseAlongFrontText" HorizontalAlignment="Left" Height="23" Margin="23,235,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="45" CaretBrush="#FF4CA85D" BorderBrush="{x:Null}" Foreground="#FF3E3E3E" FontSize="16" Background="{x:Null}" TextAlignment="Center"/>
+                        <TextBox x:Name="SizeAreaDefenseAlongDepthText" HorizontalAlignment="Left" Height="23" Margin="112,235,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="45" BorderBrush="{x:Null}" CaretBrush="#FF4CA85D" Foreground="#FF3E3E3E" FontSize="16" Background="{x:Null}" TextAlignment="Center"/>
+                        <TextBox x:Name="AutopsiesDgreeObjectsAttackText" HorizontalAlignment="Left" Height="23" Margin="222,235,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="45" BorderBrush="{x:Null}" CaretBrush="#FF4CA85D" Foreground="#FF3E3E3E" FontSize="16" Background="{x:Null}" TextAlignment="Center"/>
+                        <TextBox x:Name="DegreeOfDestructionByFireText" HorizontalAlignment="Left" Height="23" Margin="348,235,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="45" BorderBrush="{x:Null}" CaretBrush="#FF4CA85D" Foreground="#FF3E3E3E" FontSize="16" Background="{x:Null}" TextAlignment="Center"/>
+                        <TextBox x:Name="DepthHerniationAttackText" HorizontalAlignment="Left" Height="23" Margin="467,235,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="45" BorderBrush="{x:Null}" CaretBrush="#FF4CA85D" Foreground="#FF3E3E3E" FontSize="16" Background="{x:Null}" TextAlignment="Center"/>
+                        <TextBox x:Name="ProportionOfFalseObjectsText" HorizontalAlignment="Left" Height="23" Margin="573,235,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="45" BorderBrush="{x:Null}" CaretBrush="#FF4CA85D" Foreground="#FF3E3E3E" FontSize="16" Background="{x:Null}" TextAlignment="Center"/>
+                        <TextBox x:Name="ProportionOfKilledText" HorizontalAlignment="Left" Height="23" Margin="663,235,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="45" BorderBrush="{x:Null}" CaretBrush="#FF4CA85D" Foreground="#FF3E3E3E" FontSize="16" Background="{x:Null}" TextAlignment="Center"/>
+                        <TextBox x:Name="TimeToPrepareDefenceText" HorizontalAlignment="Left" Height="23" Margin="772,235,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="45" BorderBrush="{x:Null}" CaretBrush="#FF4CA85D" Foreground="#FF3E3E3E" FontSize="16" Background="{x:Null}" TextAlignment="Center"/>
+                    </Grid>
+                    <Grid x:Name="DataAboutDefender" Margin="-2.471,300.5,-0.998,7.609" HorizontalAlignment="Center" VerticalAlignment="Center">
+                        <Image Source="Images/FM8_2.png" Stretch="Fill" HorizontalAlignment="Left" Width="850.469" Height="306.891" VerticalAlignment="Top"/>
+                        <TextBox x:Name="FrontOffensiveText" HorizontalAlignment="Left" Height="23" Margin="5.721,260,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="45" CaretBrush="#FF4CA85D" Foreground="#FF3E3E3E" BorderBrush="{x:Null}" FontSize="16" Background="{x:Null}" TextAlignment="Center"/>
+                        <TextBox x:Name="GivenDepthText" HorizontalAlignment="Left" Height="23" Margin="68.471,260,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="45" CaretBrush="#FF4CA85D" Foreground="#FF3E3E3E" BorderBrush="{x:Null}" FontSize="16" Background="{x:Null}" TextAlignment="Center"/>
+                        <TextBox x:Name="PeriodOfExecutionText" HorizontalAlignment="Left" Height="23" Margin="128.471,260,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="45" CaretBrush="#FF4CA85D" Foreground="#FF3E3E3E" BorderBrush="{x:Null}" FontSize="16" Background="{x:Null}" TextAlignment="Center"/>
+                        <TextBox x:Name="SpeedOfMovementText" HorizontalAlignment="Left" Height="23" Margin="198.471,260,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="45" CaretBrush="#FF4CA85D" Foreground="#FF3E3E3E" BorderBrush="{x:Null}" FontSize="16" Background="{x:Null}" TextAlignment="Center"/>
+                        <TextBox x:Name="CoeffSpeedRedutionWhenManeuveringText" HorizontalAlignment="Left" Height="23" Margin="278.471,260,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="45" CaretBrush="#FF4CA85D" Foreground="#FF3E3E3E" BorderBrush="{x:Null}" FontSize="16" Background="{x:Null}" TextAlignment="Center"/>
+                        <TextBox x:Name="AutopsiesDgreeObjectsDefenderText" HorizontalAlignment="Left" Height="23" Margin="358.471,260,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="45" CaretBrush="#FF4CA85D" Foreground="#FF3E3E3E" BorderBrush="{x:Null}" FontSize="16" Background="{x:Null}" TextAlignment="Center"/>
+                        <TextBox x:Name="DegreeOfDestructionByFireDefenderText" HorizontalAlignment="Left" Height="23" Margin="438.471,260,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="45" CaretBrush="#FF4CA85D" Foreground="#FF3E3E3E" BorderBrush="{x:Null}" FontSize="16" Background="{x:Null}" TextAlignment="Center"/>
+                        <TextBox x:Name="AddLossesInMeleeText" HorizontalAlignment="Left" Height="23" Margin="508.471,260,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="45" CaretBrush="#FF4CA85D" Foreground="#FF3E3E3E" BorderBrush="{x:Null}" FontSize="16" Background="{x:Null}" TextAlignment="Center"/>
+                        <TextBox x:Name="ShareDestroyMeansOfAirDefenderText" HorizontalAlignment="Left" Height="23" Margin="573.471,260,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="45" CaretBrush="#FF4CA85D" Foreground="#FF3E3E3E" BorderBrush="{x:Null}" FontSize="16" Background="{x:Null}" TextAlignment="Center"/>
+                        <TextBox x:Name="DegreeOfExcellenceInManagementText" HorizontalAlignment="Left" Height="23" Margin="638.471,260,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="45" CaretBrush="#FF4CA85D" Foreground="#FF3E3E3E" BorderBrush="{x:Null}" FontSize="16" Background="{x:Null}" TextAlignment="Center"/>
+                        <TextBox x:Name="DegreeOfExcellenceInLevelOfCombatCapabilityText" HorizontalAlignment="Left" Height="23" Margin="718.471,260,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="45" CaretBrush="#FF4CA85D" Foreground="#FF3E3E3E" BorderBrush="{x:Null}" FontSize="16" Background="{x:Null}" TextAlignment="Center"/>
+                    </Grid>
+                </Grid>
+
+                <Grid x:Name="ExitValueSlide" Visibility="Visible" d:IsHidden="True">
+                    <ScrollViewer>
+                        <Grid x:Name="ExitTable1" Height="778" Width="737" Margin="0,40">
+                            <Image Margin="0,0,0,0" Source="Images/PRezult.png" Stretch="Fill" HorizontalAlignment="Left" VerticalAlignment="Center" Width="649" Height="778">
+                                <Image.Effect>
+                                    <DropShadowEffect BlurRadius="15" Color="#FFD6D1D1" ShadowDepth="9"/>
+                                </Image.Effect>
+                            </Image>
+                            <Grid Margin="649,0,0,0" Height="778">
+                                <Grid Margin="0,75.5,0,659.5" Width="88" Height="43">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition/>
+                                        <RowDefinition/>
+                                    </Grid.RowDefinitions>
+                                    <ProgressBar x:Name="WeaponesAttackProgr" Background="{x:Null}" BorderBrush="{x:Null}" Foreground="#FFE74C3C"/>
+                                    <ProgressBar x:Name="WeaponesDefenderProgr" Background="{x:Null}" BorderBrush="{x:Null}" Foreground="#FF014261" Grid.Row="1"/>
+                                </Grid>
+                                <Grid Margin="0,127.5,0,599.5" Width="88" Height="43">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition/>
+                                        <RowDefinition/>
+                                    </Grid.RowDefinitions>
+                                    <ProgressBar x:Name="AverageDensityAttProg" Background="{x:Null}" BorderBrush="{x:Null}" Foreground="#FFE74C3C"/>
+                                    <ProgressBar x:Name="AverageDensityDefProg" Background="{x:Null}" BorderBrush="{x:Null}" Foreground="#FF014261" Grid.Row="1"/>
+                                </Grid>
+                                <Grid Margin="0,179.5,0,555.5" Width="88" Height="43">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition/>
+                                        <RowDefinition/>
+                                    </Grid.RowDefinitions>
+                                    <ProgressBar x:Name="InitialSuperiorityChatrAttack" Background="{x:Null}" BorderBrush="{x:Null}" Foreground="#FFE74C3C"/>
+                                    <ProgressBar x:Name="InitialSuperiorityChatrDefender" Margin="0" Background="{x:Null}" BorderBrush="{x:Null}" Foreground="#FF014261" Grid.Row="1"/>
+                                </Grid>
+                                <Grid Margin="0,242.5,0,484.5" Width="88" Height="43">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition/>
+                                        <RowDefinition/>
+                                    </Grid.RowDefinitions>
+                                    <ProgressBar x:Name="CalculationOffireAttackChart"  Background="{x:Null}" BorderBrush="{x:Null}" Foreground="#FFE74C3C"/>
+                                    <ProgressBar x:Name="CalculationOffireDefenderChart" Background="{x:Null}" BorderBrush="{x:Null}" Foreground="#FF014261" Grid.Row="1"/>
+                                </Grid>
+                                <Grid Margin="0,308.5,0,418.5" Width="88" Height="43">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition/>
+                                        <RowDefinition/>
+                                    </Grid.RowDefinitions>
+                                    <ProgressBar Background="{x:Null}" BorderBrush="{x:Null}" Foreground="#FFE74C3C"/>
+                                    <ProgressBar Background="{x:Null}" BorderBrush="{x:Null}" Foreground="#FF34495E" Grid.Row="1"/>
+                                </Grid>
+                                <Grid Margin="0,368.5,0,366.5" Width="88" Height="43">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition/>
+                                        <RowDefinition/>
+                                    </Grid.RowDefinitions>
+                                    <ProgressBar x:Name="DegreeofAttackProg" Background="{x:Null}" BorderBrush="{x:Null}" Foreground="#FFE74C3C"/>
+                                    <ProgressBar x:Name="DegreeofDefenderProg" Background="{x:Null}" BorderBrush="{x:Null}" Foreground="#FF014261" Grid.Row="1"/>
+                                </Grid>
+                                <Grid Margin="0,427.5,0,299.5" Width="88" Height="43">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition/>
+                                        <RowDefinition/>
+                                    </Grid.RowDefinitions>
+                                    <ProgressBar x:Name="PosibleDepthProg" Background="{x:Null}" BorderBrush="{x:Null}" Foreground="#FFE74C3C"/>
+                                    <ProgressBar x:Name="GivenDepthProg"   Background="{x:Null}" BorderBrush="{x:Null}" Foreground="#FF014261" Grid.Row="1"/>
+                                </Grid>
+                                <Grid Margin="0,537.5,0,189.5" Width="88" Height="43">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition/>
+                                        <RowDefinition/>
+                                    </Grid.RowDefinitions>
+                                    <ProgressBar x:Name="LossSidesMeleeAttackChart" Background="{x:Null}" BorderBrush="{x:Null}" Foreground="#FFE74C3C"/>
+                                    <ProgressBar x:Name="LossSidesMeleeDefenderChart" Background="{x:Null}" BorderBrush="{x:Null}" Foreground="#FF014261" Grid.Row="1"/>
+                                </Grid>
+                                <Grid Margin="0,591.333,0,144.5" Width="88" Height="43">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition/>
+                                        <RowDefinition/>
+                                    </Grid.RowDefinitions>
+                                    <ProgressBar x:Name="TotalLossAttackChart" Background="{x:Null}" BorderBrush="{x:Null}" Foreground="#FFE74C3C"/>
+                                    <ProgressBar x:Name="TotalLossDefenderChart" Background="{x:Null}" BorderBrush="{x:Null}" Foreground="#FF014261" Grid.Row="1"/>
+                                </Grid>
+                                <Grid Margin="0,723.5,0,3.5" Width="88" Height="43">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition/>
+                                        <RowDefinition/>
+                                    </Grid.RowDefinitions>
+                                    <ProgressBar x:Name="ProbabilityAttackChart" Background="{x:Null}" BorderBrush="{x:Null}" Foreground="#FFE74C3C"/>
+                                    <ProgressBar x:Name="ProbabilitydefenderChart" Background="{x:Null}" BorderBrush="{x:Null}" Foreground="#FF014261" Grid.Row="1"/>
+                                </Grid>
+                            </Grid>
+
+                            <Grid Width="284.5" HorizontalAlignment="Center" Margin="359.5,0,93,0">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="7*"/>
+                                    <ColumnDefinition Width="29*"/>
+                                    <ColumnDefinition Width="21*"/>
+                                </Grid.ColumnDefinitions>
+                                <Label x:Name="WeaponesAttack" Content="" HorizontalAlignment="Left" Margin="34,78,0,0" VerticalAlignment="Top" Width="85" Foreground="#FF444444" FontFamily="Segoe UI Black" FontSize="18.667" Grid.ColumnSpan="2"/>
+                                <Label x:Name="AverageDensityAttack" Grid.Column="1" HorizontalAlignment="Left" Margin="0,134,0,0" VerticalAlignment="Top" Width="85" Foreground="#FF444444" FontFamily="Segoe UI Black" FontSize="18.667" Height="35"/>
+                                <Label x:Name="InitialSuperiorityAttack" Content="" Grid.Column="1" HorizontalAlignment="Left" Margin="0,184,0,0" VerticalAlignment="Top" Width="85.062" Foreground="#FF444444" FontFamily="Segoe UI Black" FontSize="18.667"/>
+                                <Label x:Name="CalculationOfFireAttack" Content="" Grid.Column="1" HorizontalAlignment="Left" Margin="0,250,0,0" VerticalAlignment="Top" Width="85.062" Foreground="#FF444444" FontFamily="Segoe UI Black" FontSize="18.667"/>
+                                <Label Content="" Grid.Column="1" HorizontalAlignment="Left" Margin="0,318,0,0" VerticalAlignment="Top" Width="85.062" Foreground="#FF444444" FontFamily="Segoe UI Black" FontSize="18.667"/>
+                                <Label x:Name="DegreeOfDamadeAttak" Content="" Grid.Column="1" HorizontalAlignment="Left" Margin="0,376,0,0" VerticalAlignment="Top" Width="85.062" Foreground="#FF444444" FontFamily="Segoe UI Black" FontSize="18.667"/>
+                                <Label x:Name="PosibleDepthPromotion" Content="" Grid.Column="1" HorizontalAlignment="Left" Margin="0,435,0,0" VerticalAlignment="Top" Width="85.062" Foreground="#FF444444" FontFamily="Segoe UI Black" FontSize="18.667"/>
+                                <Label x:Name="LossSidesMeleeAttack" Content="" HorizontalAlignment="Left" Margin="0,545,0,0" VerticalAlignment="Top" Width="85.062" Foreground="#FF444444" FontFamily="Segoe UI Black" FontSize="18.667" Grid.Column="1"/>
+                                <Label x:Name="TotalLossAttack" Content="" Grid.Column="1" HorizontalAlignment="Left" Margin="0,595,0,0" VerticalAlignment="Top" Width="85.062" Foreground="#FF444444" FontFamily="Segoe UI Black" FontSize="18.667"/>
+                                <Label x:Name="ExpectedTempo" Content="" Grid.Column="1" HorizontalAlignment="Left" Margin="0,638,0,0" VerticalAlignment="Top" Width="85.062" Foreground="#FF444444" FontFamily="Segoe UI Black" FontSize="18.667"/>
+                                <Label x:Name="TimingAdvance" Content="" Grid.Column="1" HorizontalAlignment="Left" Margin="0,680,0,0" VerticalAlignment="Top" Width="85.062" Foreground="#FF444444" FontFamily="Segoe UI Black" FontSize="18.667"/>
+                                <Label x:Name="ProbabilityAttack" Content="" Grid.Column="1" HorizontalAlignment="Left" Margin="0,732,0,0" VerticalAlignment="Top" Width="85.062" Foreground="#FF444444" FontFamily="Segoe UI Black" FontSize="18.667"/>
+                                <Label x:Name="WeaponesDefender" Content="" Grid.Column="2" HorizontalAlignment="Left" Margin="0,78,0,0" VerticalAlignment="Top" Width="85.062" Foreground="#FF444444" FontFamily="Segoe UI Black" FontSize="18.667"/>
+                                <Label x:Name="AverageDensityDefender" Grid.Column="2" HorizontalAlignment="Left" Margin="0,134,0,0" VerticalAlignment="Top" Width="85" Foreground="#FF444444" FontFamily="Segoe UI Black" FontSize="18.667" Height="35"/>
+                                <Label x:Name="InitialSuperiorityDefender" Content="" Grid.Column="2" HorizontalAlignment="Left" Margin="0,184,0,0" VerticalAlignment="Top" Width="85.062" Foreground="#FF444444" FontFamily="Segoe UI Black" FontSize="18.667"/>
+                                <Label x:Name="CalculationOfFireDefender" Content="" Grid.Column="2" HorizontalAlignment="Left" Margin="0,250,0,0" VerticalAlignment="Top" Width="85.062" Foreground="#FF444444" FontFamily="Segoe UI Black" FontSize="18.667"/>
+                                <Label Content="" Grid.Column="2" HorizontalAlignment="Left" Margin="0,318,0,0" VerticalAlignment="Top" Width="85.062" Foreground="#FF444444" FontFamily="Segoe UI Black" FontSize="18.667"/>
+                                <Label x:Name="DegreeOfDamageDefender" Content="" Grid.Column="2" HorizontalAlignment="Left" Margin="0,376,0,0" VerticalAlignment="Top" Width="85.062" Foreground="#FF444444" FontFamily="Segoe UI Black" FontSize="18.667"/>
+                                <Label x:Name="Givendepth" Content="" Grid.Column="2" HorizontalAlignment="Left" Margin="0,435,0,0" VerticalAlignment="Top" Width="85" Foreground="#FF444444" FontFamily="Segoe UI Black" FontSize="18.667" Background="{x:Null}"/>
+                                <Label x:Name="StabilityOfDefense" Content="" Grid.Column="2" HorizontalAlignment="Left" Margin="0,491,0,0" VerticalAlignment="Top" Width="85.062" Foreground="#FF444444" FontFamily="Segoe UI Black" FontSize="18.667"/>
+                                <Label x:Name="LossSidesMeleeDefender" Content="" Grid.Column="2" HorizontalAlignment="Left" Margin="0,545,0,0" VerticalAlignment="Top" Width="85.062" Foreground="#FF444444" FontFamily="Segoe UI Black" FontSize="18.667"/>
+                                <Label x:Name="TotalLossDefender" Content="" Grid.Column="1" HorizontalAlignment="Left" Margin="144.683,595,0,0" VerticalAlignment="Top" Width="85.062" Foreground="#FF444444" FontFamily="Segoe UI Black" FontSize="18.667" Grid.ColumnSpan="2"/>
+                                <Label x:Name="ProbabilityDefender" Content="" Grid.Column="1" HorizontalAlignment="Left" Margin="144.683,732,0,0" VerticalAlignment="Top" Width="85.062" Foreground="#FF444444" FontFamily="Segoe UI Black" FontSize="18.667" Grid.ColumnSpan="2"/>
+                            </Grid>
+
+                        </Grid>
+                    </ScrollViewer>
+                    <!--Сетка с прогрес-баром-->
+
+                </Grid>
+
+                <Grid x:Name="Schema1" Height="615" VerticalAlignment="Center" HorizontalAlignment="Center" Width="847" Background="White" d:IsHidden="True">
+                    <Image Margin="187.5,185.5,187.5,37.5" Source="Images/Image1.png" Stretch="Fill"/>
+                    <Label Content="Общая схема обстановки" HorizontalAlignment="Center" Margin="295.15,57.126,292.5,0" VerticalAlignment="Top" FontSize="21.333"/>
+
+                </Grid>
+                <Grid x:Name="RecomendationsSlide" Height="615" VerticalAlignment="Center" HorizontalAlignment="Center" Width="847" Background="White" d:IsHidden="True">
+                    <Label Content="Рекомендации" HorizontalAlignment="Center" VerticalAlignment="Top" FontSize="21.333" FontWeight="Bold" Width="195" Margin="0,21,0,0" HorizontalContentAlignment="Center"/>
+                    <TextBox x:Name="RecomendText" HorizontalAlignment="Center" TextWrapping="Wrap" VerticalAlignment="Center" Width="794" Height="514" Margin="0,48,0,0" FontFamily="/MathModelApp;component/Fonts/#HelveticaNeueCyr" FontSize="18.667" ScrollViewer.VerticalScrollBarVisibility="Auto" ScrollViewer.CanContentScroll="True" Background="{x:Null}" BorderBrush="{x:Null}"/>
+
+                </Grid>
+
+
+
+            </Grid>
+
+        </Grid>
+        <Ellipse x:Name="ellipse" HorizontalAlignment="Right" Height="55" VerticalAlignment="Bottom" Width="55" Margin="0,0,20,20" Grid.Column="1" RenderTransformOrigin="0.5,0.5" MouseLeftButtonDown="ellipse_MouseLeftButtonDown">
+            <Ellipse.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform/>
+                    <SkewTransform/>
+                    <RotateTransform/>
+                    <TranslateTransform/>
+                </TransformGroup>
+            </Ellipse.RenderTransform>
+            <Ellipse.Fill>
+                <ImageBrush ImageSource="Icons/Command-Reset-128.png" Stretch="UniformToFill"/>
+            </Ellipse.Fill>
+        </Ellipse>
+
+
+
+
+
+        <!-- Главное меню-->
+
+
+
+
+
+        <Grid x:Name="MenuLarge" HorizontalAlignment="Left" Width="75" Background="#FF009688" Margin="0,0,0,0">
+            <StackPanel x:Name="Logo" VerticalAlignment="Top" Background="#43FFFFFF">
+                <Image Source="Icons/Logo.png" Stretch="Fill" RenderTransformOrigin="0.556,0.5" Width="45" Margin="0,15,0,0" Height="45" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                <Label Content="КОМБАТ" VerticalAlignment="Center" FontFamily="/MathModelApp;component/Fonts/#HelveticaNeueCyr" Foreground="White" HorizontalAlignment="Center"/>
+            </StackPanel>
+            <StackPanel x:Name="MenuButtons" Orientation="Vertical" VerticalAlignment="Top" Margin="0,120,0,0">
+                <Button x:Name="OpenButton" VerticalAlignment="Top" Height="70" Background="{x:Null}" BorderBrush="{x:Null}" BorderThickness="0" ClickMode="Press">
+                    <StackPanel Margin="0" VerticalAlignment="Center">
+                        <Image Source="Icons/Files-128.png" Width="36" Height="36" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="#FFECF0F1" FontSize="9.333"><Run Language="ru-ru" Text="Открыть"/></TextBlock>
+                    </StackPanel>
+                </Button>
+                <Button x:Name="SaveButton" VerticalAlignment="Top" Height="70" Background="{x:Null}" BorderBrush="{x:Null}" BorderThickness="0">
+                    <StackPanel Margin="0" VerticalAlignment="Center">
+                        <Image Source="Icons/Save-128.png" Width="36" Height="36" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="#FFECF0F1" FontSize="9.333"><Run Language="ru-ru" Text="Сохранить"/></TextBlock>
+                    </StackPanel>
+                </Button>
+                <Button x:Name="EditFormulars" VerticalAlignment="Top" Height="70" Background="{x:Null}" BorderBrush="{x:Null}" Click="EditFormulars_Click" BorderThickness="0">
+                    <StackPanel Margin="0" VerticalAlignment="Center">
+                        <Image Source="Icons/Data-Edit-128.png" Width="36" Height="36" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="#FFECF0F1" Height="31" Margin="-26.637,0,-29,0" Width="125.637" TextAlignment="Center" FontSize="9.333"><Run Language="ru-ru" Text="Редактор "/><LineBreak/><Run Language="ru-ru" Text="формуляров"/></TextBlock>
+                    </StackPanel>
+                </Button>
+                <Button x:Name="EditForcesButton" VerticalAlignment="Top" Height="70" Background="{x:Null}" BorderBrush="{x:Null}" Click="EditForcesButton_Click" BorderThickness="0">
+                    <StackPanel Margin="0" VerticalAlignment="Center">
+                        <Image Source="Icons/Add-128.png" Width="36" Height="36" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="#FFECF0F1" Width="70" TextAlignment="Center" FontSize="9.333"><Run Language="ru-ru" Text="Боевой состав "/><LineBreak/><Run Language="ru-ru" Text="сторон"/></TextBlock>
+                    </StackPanel>
+                </Button>
+                <Button x:Name="EditValueButton" VerticalAlignment="Top" Height="70" Background="{x:Null}" BorderBrush="{x:Null}" Click="EditValueButton_Click" BorderThickness="0">
+                    <StackPanel Margin="0" VerticalAlignment="Center">
+                        <Image Source="Icons/Proceed-Marked-Headers-128.png" Width="36" Height="36" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="#FFECF0F1" TextAlignment="Center" FontSize="9.333"><Run Language="ru-ru" Text="Оперативно-"/><LineBreak/><Run Language="ru-ru" Text="тактические"/></TextBlock>
+                    </StackPanel>
+                </Button>
+                <Button x:Name="ExitValueButton" VerticalAlignment="Top" Height="70" Background="{x:Null}" BorderBrush="{x:Null}" Click="ExitValueButton_Click" BorderThickness="0">
+                    <StackPanel Margin="0" VerticalAlignment="Center" HorizontalAlignment="Left">
+                        <Image Source="Icons/Rezult.png" Width="36" Height="36" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="#FFECF0F1" TextAlignment="Center" FontSize="9.333"><Run Language="ru-ru" Text="Основные"/><LineBreak/><Run Language="ru-ru" Text="показатели боя"/></TextBlock>
+                    </StackPanel>
+                </Button>
+                <Button x:Name="SchemaButton" VerticalAlignment="Top" Height="70" Background="{x:Null}" BorderBrush="{x:Null}" Click="SchemaButton_Click" BorderThickness="0">
+                    <StackPanel Margin="0" VerticalAlignment="Center">
+                        <Image Source="Icons/Map-128.png" Width="36" Height="36" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="#FFECF0F1" TextAlignment="Center" FontSize="9.333"><Run Language="ru-ru" Text="Схема "/><LineBreak/><Run Language="ru-ru" Text="обстановки"/></TextBlock>
+                    </StackPanel>
+                </Button>
+                <Button x:Name="RecomendationsButton" VerticalAlignment="Top" Background="{x:Null}" BorderBrush="{x:Null}" BorderThickness="0" Click="RecomendationsButton_Click">
+                    <StackPanel Height="70" Margin="0" VerticalAlignment="Center">
+                        <Image Source="Icons/Rezult.png" Width="36" Height="36" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="#FFECF0F1" Margin="0" TextAlignment="Center" FontSize="9.333"><Run Language="ru-ru" Text="Рекомендации"/></TextBlock>
+                    </StackPanel>
+                </Button>
+            </StackPanel>
+        </Grid>
+    </Grid>
+</Window>
